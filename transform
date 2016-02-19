@@ -8,10 +8,11 @@
 
 if [ $# -lt 1 ]; then
 	echo 'This script requires a directory to copy. It will be placed in "transformed" folder in the current working directory'
+	echo 'A second argument can be used to specify the name of the directory (via a move)'
 	exit 1
 fi
 
-if [ -d 'transformed' ] && [ ! -f 'transformed/ignore' ]; then
+if [ -d 'transformed' ] && [ ! -f 'transformed/ignore' ] || [ -d "$2" ] && [ ! -f "$2/ignore" ]; then
 	echo 'WARNING: transformed directory already exists without an ignore file in it. Aborting.'
 	exit 2
 fi
@@ -21,15 +22,14 @@ function getScriptDir {
 	echo $script_dir
 }
 
-rm -r transformed/
+if [ -d transformed ]; then rm -r transformed; fi
 script_dir="$(getScriptDir)"
 cp -r "$1" transformed/
 touch transformed/ignore
-$script_dir/importify "$(pwd)/transformed" &
+$script_dir/importify "$(pwd)/transformed"
 $script_dir/classify "$(pwd)/transformed"
 $script_dir/autoimport "$(pwd)/transformed"
 
-
-
-
-
+if [ $# -eq 2 ]; then
+	mv transformed/ "$2"
+fi
