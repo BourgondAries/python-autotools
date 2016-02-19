@@ -1,0 +1,22 @@
+#! /bin/bash
+
+# The purpose of this script is to put the filename as a
+# class in front of the entire code.
+if [ $# -le 0 ]; then
+	echo 'This program a single directory as its argument'
+	exit
+fi
+cd "$1"
+shopt -s globstar
+for i in **/; do
+	for j in $i*.py; do
+		echo "$j" | grep -P '\*|__' >& /dev/null
+		if [ $? -eq 0 ]; then
+			continue
+		fi
+		name=${j%.py}
+		name=${name##*/}
+		sed -i 's/^/\t/g' "$j"
+		sed -i "1i class $name:" "$j"
+	done
+done
