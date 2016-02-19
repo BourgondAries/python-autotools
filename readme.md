@@ -2,6 +2,15 @@
 
 The purpose of the python-autools it to automatically import subfolders (modules). Create classes based on filenames, and generate the `__init__.py` file.
 
+## Direct Use
+
+	cd 'your-project'
+	pauto
+
+This copies your entire project and transforms it.
+
+After transforming, it runs the Main file.
+
 ## Use
 
 	transform 'your-python-containing-project'
