@@ -14,7 +14,10 @@ def enter():
 	print("Enter two numbers to add together:")
 	one = sys.stdin.readline()
 	two = sys.stdin.readline()
-	print(algo.Sum.sum(float(one), float(two)))
+	print("Your answer is: {}".format(algo.Sum.sum(float(one), float(two))))
+
+	sys.stdin.readline()
+	print("We now compute sin: {}".format(algo.Sin.getSin(355/113)))
 
 
 if __name__ == "__main__":
