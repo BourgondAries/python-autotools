@@ -6,15 +6,21 @@ if [ $# -le 0 ]; then
 	echo 'This program a single directory as its argument'
 	exit
 fi
-cd "$1"
-shopt -s globstar
-for i in **/; do
+
+function getAllImports {
 	all_dirs=
-	for j in $i*/; do
+	for j in "$1"*/; do
 		j=${j%/}
 		j=${j##*/}
 		all_dirs="${all_dirs}import $j\n"
 	done
+	echo $all_dirs
+}
+
+cd "$1"
+shopt -s globstar
+for i in **/; do
+	all_dirs=$(getAllImports "$i")
 	for j in $i*.py; do
 		echo "$j" | grep -P '\*|__' >& /dev/null
 		if [ $? -eq 0 ]; then
