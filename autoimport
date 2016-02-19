@@ -13,6 +13,7 @@ function getAllImports {
 	for j in "$1"*/; do
 		j=${j%/}
 		j=${j##*/}
+		# Add a new import because we want linting to succeed.
 		all_dirs="${all_dirs}import $j\n"
 	done
 	echo $all_dirs
