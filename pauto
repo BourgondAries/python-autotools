@@ -6,15 +6,10 @@
 # Currently runs from the directory it is in.
 # Copies to parent directory.
 
-function getScriptDir {
-	script_dir="${0%/*}"
-	echo $script_dir
-}
-
+scrdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 curdir="$(pwd)"
 pardir="${curdir%/*}"
 cd "$pardir"
-scrdir="$(getScriptDir)"
 
 "$scrdir/transform" "$curdir"
 "$pardir/transformed/Main.py"
