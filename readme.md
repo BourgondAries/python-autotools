@@ -2,6 +2,13 @@
 
 The purpose of the python-autools it to automatically import subfolders (modules). Create classes based on filenames, and generate the `__init__.py` file.
 
+## TRY THIS FIRST
+
+	cd example
+	../pauto
+
+pauto should run the example project.
+
 ## Direct Use
 
 	cd 'your-project'
