@@ -9,23 +9,32 @@ if [ $# -le 0 ]; then
 fi
 
 function getAllImports {
-	all_dirs=''
-	for j in "$1"*/; do
-		j=${j%/}
-		j=${j##*/}
-		# Add a new import because we want linting to succeed.
-		echo "$j" | grep '\*' > /dev/null
-		if [ $? -eq 1 ]; then
-			all_dirs="${all_dirs}import $j\n"
-		fi
+	all_dirs="class Bunch:\n\t__init__ = lambda self, **kw: setattr(self, '__dict__', kw)\n"
+	old=$(pwd)
+	cd "$1"
+	for j in */; do
+		echo "$j" | grep -P '\*' > /dev/null
+		if [ $? -eq 0 ]; then continue; fi
+		all_dirs="$all_dirs${j%%/*} = Bunch\n"
+		for i in "$j"*.py; do
+			echo "$i" | grep -P '__|\*' > /dev/null
+			if [ $? -eq 0 ]; then continue; fi
+			# Add a new import because we want linting to succeed.
+			base="${i%%/*}"
+			name="${i%.py}"
+			name="${name#*/}"
+			all_dirs="${all_dirs}from $2$base import $name\n"
+			all_dirs="${all_dirs}$base.$name = $name\n"
+		done
 	done
+	cd "$old"
 	echo $all_dirs
 }
 
 cd "$1"
 shopt -s globstar
 for i in **/; do
-	all_dirs=$(getAllImports "$i")
+	all_dirs=$(getAllImports "$i" ".")
 	for j in $i*.py; do
 		echo "$j" | grep -P '\*|__' >& /dev/null
 		if [ $? -eq 0 ]; then
@@ -40,7 +49,7 @@ done
 
 other=Main.py
 if [ -f "$other" ]; then
-	all_dirs=$(getAllImports)
+	all_dirs=$(getAllImports "" "")
 	if [ "$all_dirs" != '' ]; then
 		sed -i "2i $all_dirs" "$other"
 	fi
