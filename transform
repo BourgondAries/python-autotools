@@ -18,8 +18,7 @@ if [ -d 'transformed' ] && [ ! -f 'transformed/ignore' ] || [ -d "$2" ] && [ ! -
 fi
 
 function getScriptDir {
-	script_dir="${0%/*}"
-	echo $script_dir
+	echo "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 }
 
 if [ -d transformed ]; then rm -r transformed; fi
