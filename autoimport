@@ -10,8 +10,10 @@ cd "$1"
 shopt -s globstar
 for i in **/; do
 	all_dirs=
-	for j in */; do
-		all_dirs="${all_dirs}import ${j%/}\n"
+	for j in $i*/; do
+		j=${j%/}
+		j=${j##*/}
+		all_dirs="${all_dirs}import $j\n"
 	done
 	for j in $i*.py; do
 		echo "$j" | grep -P '\*|__' >& /dev/null
