@@ -31,3 +31,9 @@ for i in **/; do
 		sed -i "1i $all_dirs" "$j"
 	done
 done
+
+other=Main.py
+if [ -f "$other" ]; then
+	all_dirs=$(getAllImports)
+	sed -i "2i $all_dirs" "$other"
+fi
