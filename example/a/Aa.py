@@ -1,7 +1,7 @@
 def insideAa(stdin):
 	print("Well, here we are!")
-	stdin.read()
+	stdin.readline()
 	print("We're inside Aa")
-	stdin.read()
+	stdin.readline()
 	example = b.Bb
 	example.insideBb(stdin)
