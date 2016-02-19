@@ -9,12 +9,15 @@ if [ $# -le 0 ]; then
 fi
 
 function getAllImports {
-	all_dirs=
+	all_dirs=''
 	for j in "$1"*/; do
 		j=${j%/}
 		j=${j##*/}
 		# Add a new import because we want linting to succeed.
-		all_dirs="${all_dirs}import $j\n"
+		echo "$j" | grep '\*' > /dev/null
+		if [ $? -eq 1 ]; then
+			all_dirs="${all_dirs}import $j\n"
+		fi
 	done
 	echo $all_dirs
 }
@@ -28,12 +31,17 @@ for i in **/; do
 		if [ $? -eq 0 ]; then
 			continue
 		fi
-		sed -i "1i $all_dirs" "$j"
+		if [ "$all_dirs" != '' ]; then
+			sed -i "1i $all_dirs" "$j"
+		fi
 	done
 done
+
 
 other=Main.py
 if [ -f "$other" ]; then
 	all_dirs=$(getAllImports)
-	sed -i "2i $all_dirs" "$other"
+	if [ "$all_dirs" != '' ]; then
+		sed -i "2i $all_dirs" "$other"
+	fi
 fi
