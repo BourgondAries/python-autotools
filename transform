@@ -25,7 +25,7 @@ rm -r transformed/
 script_dir="$(getScriptDir)"
 cp -r "$1" transformed/
 touch transformed/ignore
-$script_dir/importify "$(pwd)/transformed"
+$script_dir/importify "$(pwd)/transformed" &
 $script_dir/classify "$(pwd)/transformed"
 $script_dir/autoimport "$(pwd)/transformed"
 
