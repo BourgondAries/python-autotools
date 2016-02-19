@@ -1,6 +1,7 @@
 #! /bin/bash
 
-# Here, we import all submodules automatically as their folder names.
+# Here, we import all submodules automatically as their
+# folder names.
 
 if [ $# -le 0 ]; then
 	echo 'This program a single directory as its argument'
