@@ -22,7 +22,7 @@ After transforming, it runs the Main file.
 
 	transform 'your-python-containing-project'
 
-This COPIES the project into a new directory 'transform'.
+This COPIES the project into a new directory 'transformed'.
 Your original project will not be edited.
 
 ## Classify
