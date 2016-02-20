@@ -2,6 +2,7 @@
 
 # The purpose of this script is to put the filename as a
 # class in front of the entire code.
+# It will be inserted after the last manually imported library
 if [ $# -le 0 ]; then
 	echo 'This program a single directory as its argument'
 	exit
@@ -16,7 +17,13 @@ for i in **/; do
 		fi
 		name=${j%.py}
 		name=${name##*/}
-		sed -i 's/^/\t/g' "$j"
-		sed -i "1i class $name:" "$j"
+		line=$(cat "$j" | grep -n '^import' | cut -d \: -f 1 | tail -n 1)
+		if [ "$line" == '' ]; then
+			line=1
+		else
+			line=$((line+1))
+		fi
+		sed -i "${line}"',${s/^/\t/g}' "$j"
+		sed -i "${line}i class $name:" "$j"
 	done
 done
