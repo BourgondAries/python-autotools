@@ -25,6 +25,7 @@ function getAllImports {
 			name="${name#*/}"
 			all_dirs="${all_dirs}from $2$base import $name\n"
 			all_dirs="${all_dirs}$base.$name = $name\n"
+			all_dirs="${all_dirs}del $name\n"
 		done
 	done
 	cd "$old"
